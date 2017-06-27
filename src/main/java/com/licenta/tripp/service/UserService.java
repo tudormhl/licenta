@@ -48,4 +48,8 @@ public class UserService {
     public void changePassword(String username, String password) {
         userDao.changePassword(username, password);
     }
+
+    public User verifyToken(String token) {
+        return userDao.findToken(token);
+    }
 }

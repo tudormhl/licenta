@@ -105,5 +105,38 @@ public class UserDAO extends DBConnect {
         }
     }
 
+    public User findToken(String token) {
+
+        User user = new User();
+
+        String sql = " SELECT username, password, interests, token " +
+                " FROM user " +
+                " where token = ?; ";
+
+        try{
+            dbConnection = connect();
+            preparedStatement = (PreparedStatement) dbConnection.prepareStatement(sql);
+            preparedStatement.setString(1,token+"");
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()){
+
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String userToken = rs.getString("token");
+                //String interests = rs.getString("interests");
+
+                user.setUsername(username);
+                user.setPassword(password);
+                user.setToken(userToken);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
 
 }

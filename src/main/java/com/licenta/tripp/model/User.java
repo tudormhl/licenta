@@ -9,6 +9,7 @@ public class User {
 
     private String username;
     private String password;
+    private String token;
     private List<Interest> interestList;
 
     public String getUsername() {
@@ -34,6 +35,15 @@ public class User {
 
     public void setInterestList(List<Interest> interestList) {
         this.interestList = interestList;
+    }
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public User(){

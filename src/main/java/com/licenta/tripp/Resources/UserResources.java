@@ -3,6 +3,7 @@ package com.licenta.tripp.Resources;
 import com.licenta.tripp.model.User;
 import com.licenta.tripp.service.UserService;
 import com.licenta.tripp.transfer.ErrorMessage;
+import com.licenta.tripp.util.Secured;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -15,7 +16,7 @@ import javax.ws.rs.core.Response;
 @Path("/user")
 public class UserResources {
 
-    UserService userService = new UserService();
+    private UserService userService = new UserService();
 
     @POST
     @Path("/register")
@@ -31,8 +32,11 @@ public class UserResources {
                     .entity(new ErrorMessage("Username is already in use ")).build();
         }
 
-        user.setUsername(username);
-        user.setPassword(password);
+        if(!username.isEmpty() && !password.isEmpty()){
+            user.setUsername(username);
+            user.setPassword(password);
+        }
+
 
         userService.registerUser(user);
 
@@ -41,11 +45,12 @@ public class UserResources {
     }
 
     @PUT
+    @Secured
     @Path("/edit")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response changePassword(@FormParam("username") String username,
-                                   @FormParam("newPassword") String newPassword){
+    public Response changePassword(@QueryParam("username") String username,
+                                   @QueryParam("newPassword") String newPassword){
 
         User user = userService.findByUsername(username);
         if(user == null) {
