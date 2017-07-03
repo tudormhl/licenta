@@ -27,9 +27,9 @@ public class UserResources {
 
 
         User user = userService.findByUsername(username);
-        if(user != null) {
+        if(user.getUsername() != null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorMessage("Username is already in use ")).build();
+                    .entity("Username is already in use").build();
         }
 
         if(!username.isEmpty() && !password.isEmpty()){
@@ -40,7 +40,7 @@ public class UserResources {
 
         userService.registerUser(user);
 
-        return Response.status(Response.Status.BAD_REQUEST)
+        return Response.status(Response.Status.OK)
                 .entity("You have successfully created an account!").build();
     }
 
@@ -53,7 +53,7 @@ public class UserResources {
                                    @QueryParam("newPassword") String newPassword){
 
         User user = userService.findByUsername(username);
-        if(user == null) {
+        if(user.getUsername() == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("User does not exist")).build();
         }
 
